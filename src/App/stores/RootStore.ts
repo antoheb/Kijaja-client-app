@@ -1,14 +1,20 @@
 import { configure } from "mobx";
 import { createContext } from "react";
-import CustomerStore from "./CustomerStore";
+import UserStore from "./UserStore";
+import CommonStore from "./CommonStore";
+import AddressStore from "./AddressStore";
 
 configure({ enforceActions: "always" });
 
 export class RootStore {
-  customerStore: CustomerStore;
+  userStore: UserStore;
+  commonStore: CommonStore;
+  addressStore: AddressStore;
 
   constructor() {
-    this.customerStore = new CustomerStore(this);
+    this.userStore = new UserStore(this);
+    this.commonStore = new CommonStore(this);
+    this.addressStore = new AddressStore(this);
   }
 }
 

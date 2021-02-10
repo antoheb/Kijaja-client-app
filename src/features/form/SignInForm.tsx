@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Header, Form, Button, Segment } from "semantic-ui-react";
 import { Field, Form as FinalForm } from "react-final-form";
 import { TextInputIcon } from "../../App/common/form/TextInputIcon";
 import { observer } from "mobx-react-lite";
-import Agent from "../../App/api/Agent";
+import { RootStoreContext } from "../../App/stores/RootStore";
+import { FORM_ERROR } from "final-form";
+import { IUserFormValues } from "../../App/models/user";
+import { ErrorMessage } from "./ErrorMessage";
 
 const SignInForm = () => {
-  const handleSubmit = (values: any) => {
-    Agent.test.helloworld();
-  };
+  const rootStore = useContext(RootStoreContext);
+  const { login } = rootStore.userStore;
 
   return (
-    <Grid centered style={{ marginTop: "120px", marginBottom:'120px' }}>
+    <Grid centered style={{ marginTop: "80px", marginBottom: "80px" }}>
       <Grid.Column width={8}>
         <Segment>
           <Header as="h1">SIGN IN</Header>
           <br />
           <FinalForm
-            onSubmit={(values) => handleSubmit(values)}
-            render={({ handleSubmit }) => (
+            onSubmit={(values: IUserFormValues) =>
+              login(values).catch((error) => ({ [FORM_ERROR]: error }))
+            }
+            render={({
+              handleSubmit,
+              invalid,
+              pristine,
+              submitError,
+              dirtySinceLastSubmit,
+            }) => (
               <Form onSubmit={handleSubmit} error>
                 <Field
                   placeholder="fido@dogmail.com"
@@ -34,6 +44,9 @@ const SignInForm = () => {
                   type="password"
                   component={TextInputIcon}
                 />
+                {submitError && !dirtySinceLastSubmit && (
+                  <ErrorMessage error={submitError} />
+                )}
                 <br />
                 <Button
                   floated="left"
@@ -44,6 +57,7 @@ const SignInForm = () => {
                   to={"/register"}
                 />
                 <Button
+                  disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                   float="left"
                   basic
                   color="yellow"
