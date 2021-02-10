@@ -3,7 +3,7 @@ import { IAddress } from "../models/address";
 import { IAds } from "../models/ads";
 import {IUser, IUserFormValues } from "../models/user";
 
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = "https://kijaja.me/api";
 
 axios.interceptors.request.use(
   (config) => {
