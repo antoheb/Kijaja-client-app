@@ -18,8 +18,8 @@ import { ErrorMessage } from "./ErrorMessage";
 
 export const EditProfile: React.FC = () => {
   const validate = combineValidators({
-    firstName: isRequired({ message: "Le prenom est obligatoire" }),
-    lastName: isRequired({ message: "Le nom est obligatoire" }),
+    firstName: isRequired({ message: "First name is required" }),
+    lastName: isRequired({ message: "Last name is required" }),
   });
 
   const rootStore = useContext(RootStoreContext);

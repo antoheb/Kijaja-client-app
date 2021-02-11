@@ -13,6 +13,7 @@ import {
 import { TextInput } from "../../App/common/form/TextInput";
 import { AddressFormValues, IAddress } from "../../App/models/address";
 import { RootStoreContext } from "../../App/stores/RootStore";
+import { ErrorMessage } from "./ErrorMessage";
 
 const AddressForm: React.FC = () => {
   const validate = combineValidators({
@@ -30,6 +31,7 @@ const AddressForm: React.FC = () => {
     loadingInitial,
   } = useContext(RootStoreContext).addressStore;
   const [address, setAddress] = useState(new AddressFormValues());
+  const {openModal} = useContext(RootStoreContext).modalStore;
 
   useEffect(() => {
     loadAddress().then((address) => setAddress(new AddressFormValues(address)));
@@ -37,14 +39,10 @@ const AddressForm: React.FC = () => {
 
   const submitForm = (values: IAddress) => {
     if (address.street != null) {
-      modifyAddress(values).catch((error) => handleError(error));
+      modifyAddress(values).catch((error) => openModal(<ErrorMessage error={error}></ErrorMessage>));
     } else {
-      addNewAddress(values).catch((error) => handleError(error));
+      addNewAddress(values).catch((error) => openModal(<ErrorMessage error={error}></ErrorMessage>));
     }
-  };
-
-  const handleError = (error: any) => {
-    alert(error);
   };
 
   return (

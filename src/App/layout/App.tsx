@@ -17,6 +17,8 @@ import AdsDetailsPage from "../../features/ads/AdsDetailsPage";
 import AdsForm from "../../features/ads/AdsForm";
 import { ModalContainer } from "../common/modal/modalContainer";
 import { DeleteAlert } from "../../features/ads/DeleteAlert";
+import PrivateRoute from "./PrivateRoute";
+import { NotFound } from "../common/NotFound";
 
 const App: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
@@ -40,14 +42,15 @@ const App: React.FC = () => {
           <Route exact path="/" component={HomePage} />
           <Route path="/signIn" component={SignInForm} />
           <Route path="/register" component={SignUpForm} />
-          <Route exact path="/user/account" component={Account} />
+          <PrivateRoute exact path="/user/account" component={Account} />
           <Route path="/user/registerSuccess" component={RegisterSuccess} />
           <Route path="/client/verifier-email" component={VerifyEmail} />
           <Route exact path="/ads" component={AdsShowcase} />
-          <Route exact path="/ads/create" component={AdsForm} />
-          <Route exact path="/ads/create/:id" component={AdsForm} />
+          <PrivateRoute exact path="/ads/create" component={AdsForm} />
+          <PrivateRoute exact path="/ads/create/:id" component={AdsForm} />
           <Route exact path="/ads/details/:id" component={AdsDetailsPage} />
-          <Route exact path={"/ads/delete/:id"} component={DeleteAlert} />
+          <PrivateRoute exact path={"/ads/delete/:id"} component={DeleteAlert} />
+          <Route component={NotFound} />
         </Switch>
       </Container>
       <AppFooter />

@@ -1,4 +1,3 @@
-import { FORM_ERROR } from "final-form";
 import React, { useContext, useEffect, useState } from "react";
 import { Field, Form as FinalForm } from "react-final-form";
 import {
@@ -22,11 +21,8 @@ import { history } from "../..";
 import { RouteComponentProps } from "react-router-dom";
 import {
   combineValidators,
-  composeValidators,
   isRequired,
-  matchesPattern,
 } from "revalidate";
-import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
 import { NumberInput } from '../../App/common/form/NumberInput';
 
 interface RouteParams {
@@ -46,8 +42,8 @@ const AdsForm: React.FC<IProps> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
   const { createAds, loadAdDetails, modifyAds } = rootStore.adStore;
   const [ad, setAd] = useState(new AdsFormValues());
-  const [lol, setError] = useState("");
   const [loadingInitial, setLoading] = useState(true);
+  const {openModal} = rootStore.modalStore
 
   useEffect(() => {
     if (match.params.id) {
@@ -60,11 +56,10 @@ const AdsForm: React.FC<IProps> = ({ match }) => {
   }, [loadAdDetails, setAd, match.params.id, setLoading]);
 
   const handleSubmit = (values: IAds) => {
-    console.log(values);
     if (match.params.id) {
-      modifyAds(values, match.params.id).catch((error) => setError(error));
+      modifyAds(values, match.params.id).catch((error) => openModal(<ErrorMessage error={error}></ErrorMessage>));
     } else {
-      createAds(values).catch((error) => setError(error));
+      createAds(values).catch((error) => openModal(<ErrorMessage error={error}></ErrorMessage>));
     }
   };
 
@@ -122,12 +117,6 @@ const AdsForm: React.FC<IProps> = ({ match }) => {
                       options={StatusOpt}
                       component={SelectInput}
                     />
-                    {submitError && !dirtySinceLastSubmit && (
-                      <ErrorMessage error={submitError}/>
-                    )}
-                    {lol !== "" && !dirtySinceLastSubmit && (
-                      <ErrorMessage error={submitError} text={lol} />
-                    )}
                     <Button
                       disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                       loading={loadingInitial}

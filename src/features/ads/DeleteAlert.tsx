@@ -31,12 +31,11 @@ export const DeleteAlert: React.FC<IProps> = ({match}) => {
             <Item>
               <Item.Content>
                 <Item.Header style={{marginBottom:"5%"}}>
-                  {"Etes-vous sure de vouloir supprimer votre compte?"}
+                  {"Are you sure you want to delete this ad?"}
                 </Item.Header>
                 <br />
-                <Item.Description style={{marginBottom:"10%"}}>
-                  Une fois supprimmer, votre compte ne sera plus existant et il
-                  vous sera impossible de retrouver vos informations
+                <Item.Description style={{marginBottom:"5%"}}>
+                  Once deleted, your will not be able to recover your ad. Do you still want to delete this ad?
                 </Item.Description>
               </Item.Content>
             </Item>
@@ -49,12 +48,12 @@ export const DeleteAlert: React.FC<IProps> = ({match}) => {
                     }))
                   }
                   render={({ handleSubmit, submitError }) => (
-                    <Form onSubmit={handleSubmit}>
-                      {submitError && <ErrorMessage error={submitError} />}
-                      <Button as={NavLink} to={"/user/account"}>
-                        Annuler
+                    <Form onSubmit={handleSubmit} error>
+                      <Button color="black" basic as={NavLink} to={"/user/account"}>
+                        CANCEL
                       </Button>
-                      <Button type="submit">Supprimer mon compte</Button>
+                      <Button type="submit" color="red">DELETE AD</Button>
+                      {submitError && <ErrorMessage error={submitError} />}
                     </Form>
                   )}
                 />
