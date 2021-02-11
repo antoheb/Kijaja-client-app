@@ -1,9 +1,10 @@
 import axios from "axios";
 import { IAddress } from "../models/address";
 import { IAds } from "../models/ads";
-import {IUser, IUserFormValues } from "../models/user";
+import { IUser, IUserFormValues } from "../models/user";
 
-axios.defaults.baseURL = "https://kijaja.me/api";
+// axios.defaults.baseURL = "https://kijaja.me/api";
+axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.request.use(
   (config) => {
@@ -38,8 +39,11 @@ const Users = {
   resendEmailVerification: (email: string): Promise<void> =>
     axios.get(`/user/resendEmailVerification?email=${email}`),
 
-  getMyAds: (): Promise<IAds> =>
-    axios.post("/user/myAds"),
+  getMyAds: (): Promise<IAds[]> =>
+    axios.get("/user/myAds").then((response) => response.data),
+
+  edit: (values: IUser): Promise<void> =>
+    axios.post(`/user/edit`, values).then((response) => response.data),
 };
 
 const Address = {
@@ -53,7 +57,7 @@ const Address = {
     axios.post("/address/edit", values).then((response) => response.data),
 
   delete: (): Promise<void> =>
-    axios.post("/address/delete").then((response) => response.data)
+    axios.post("/address/delete").then((response) => response.data),
 };
 
 const Ads = {
@@ -63,18 +67,18 @@ const Ads = {
   modify: (id: string, values: IAds): Promise<void> =>
     axios.put(`/ads/${id}`, values).then((response) => response.data),
 
-  delete: (id: string): Promise<void> =>
-    axios.delete(`/ads/${id}`).then((response) => response.data),
+  delete: (adId: string): Promise<void> =>
+    axios.delete("/ads", {data: {id: adId}}).then((response) => response.data),
 
   List: (): Promise<IAds[]> =>
     axios.get("/ads").then((response) => response.data),
 
   Details: (id: string): Promise<IAds> =>
-    axios.get(`/ads/${id}`).then((response) => response.data)
-}
+    axios.get(`/ads/${id}`).then((response) => response.data),
+};
 
 export default {
   Users,
   Address,
-  Ads
+  Ads,
 };

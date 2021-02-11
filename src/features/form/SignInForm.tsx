@@ -8,8 +8,18 @@ import { RootStoreContext } from "../../App/stores/RootStore";
 import { FORM_ERROR } from "final-form";
 import { IUserFormValues } from "../../App/models/user";
 import { ErrorMessage } from "./ErrorMessage";
+import { combineValidators, composeValidators, isRequired, matchesPattern } from "revalidate";
 
 const SignInForm = () => {
+  const validate = combineValidators({
+    username: composeValidators(
+      isRequired({ message: "Address courriel est obligatoire" }),
+      matchesPattern(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )({ message: "Address courriel n'est pas valid" })
+    )(),
+    password: isRequired({ message: "Le mot de passe est obligatoire" }),
+  });
   const rootStore = useContext(RootStoreContext);
   const { login } = rootStore.userStore;
 
@@ -18,8 +28,9 @@ const SignInForm = () => {
       <Grid.Column width={8}>
         <Segment>
           <Header as="h1">SIGN IN</Header>
-          <br />
+          <Header size="small" color="violet">Sign In to Post an Add</Header>
           <FinalForm
+            validate={validate}
             onSubmit={(values: IUserFormValues) =>
               login(values).catch((error) => ({ [FORM_ERROR]: error }))
             }

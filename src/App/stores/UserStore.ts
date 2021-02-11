@@ -30,8 +30,8 @@ export default class UserStore {
 
   @action register = async (values: IUserFormValues) => {
     this.passwordError = null;
-    if (values.password != values.confirmPassword) {
-      this.passwordError = "Les mots de passes de sont pas identiques";
+    if (values.password !== values.confirmPassword) {
+      this.passwordError = "Passwords do not correspond";
     } else {
       try {
         await Agent.Users.registerUser(values);
@@ -101,15 +101,31 @@ export default class UserStore {
     }
   };
 
-  // @action getMyAds = async () => {
-  //   this.loadingInitial = true;
-  //   try {
-  //     const userAds = await Agent.Users.getMyAds();
-  //     runInAction(() => {
-  //       this.userAds = userAds;
-  //     })
-  //   } catch(error) {
-  //     throw error;
-  //   }
-  // }
+  @action getMyAds = async () => {
+    this.loadingInitial = true;
+    try {
+      const userAds = await Agent.Users.getMyAds();
+      runInAction(() => {
+        this.userAds = userAds;
+      });
+      this.loadingInitial = false;
+    } catch (error) {
+      this.loadingInitial = false;
+      throw error;
+    }
+  };
+
+  @action editProfile = async (values: IUser) => {
+    this.loadingInitial = true;
+    try {
+      await Agent.Users.edit(values);
+      runInAction(() => {
+        this.loadingInitial = false;
+        alert("Your account has been modified");
+      });
+    } catch (error) {
+      this.loadingInitial = false;
+      throw error;
+    }
+  };
 }

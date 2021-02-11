@@ -3,6 +3,12 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { Field, Form as FinalForm } from "react-final-form";
 import { Link } from "react-router-dom";
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  matchesPattern,
+} from "revalidate";
 import { Grid, Header, Form, Button, Segment, Icon } from "semantic-ui-react";
 import { TextInput } from "../../App/common/form/TextInput";
 import { TextInputIcon } from "../../App/common/form/TextInputIcon";
@@ -11,6 +17,21 @@ import { RootStoreContext } from "../../App/stores/RootStore";
 import { ErrorMessage } from "./ErrorMessage";
 
 const SignUpForm: React.FC = () => {
+  const validate = combineValidators({
+    email: composeValidators(
+      isRequired({ message: "L'address courriel est obligatoire" }),
+      matchesPattern(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )({ message: "L'address courriel est invalide" })
+    )(),
+    password: isRequired({ message: "Mot de passe est obligatoire" }),
+    firstName: isRequired({ message: "Le prenom est obligatoire" }),
+    lastName: isRequired({ message: "Le nom est obligatoire" }),
+    confirmPassword: isRequired({
+      message: "Vous devez confirmer votre mot de passe",
+    }),
+  });
+
   const rootStore = useContext(RootStoreContext);
   const { register, passwordError } = rootStore.userStore;
 
@@ -24,6 +45,7 @@ const SignUpForm: React.FC = () => {
               Register
             </Header>
             <FinalForm
+              validate={validate}
               onSubmit={(values: IUserFormValues) =>
                 register(values).catch((error) => ({ [FORM_ERROR]: error }))
               }

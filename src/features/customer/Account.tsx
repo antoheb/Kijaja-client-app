@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Grid, Button, Card, Image, Icon, Header } from "semantic-ui-react";
+import { Grid, Button, Card, Image, Icon } from "semantic-ui-react";
 import { RootStoreContext } from "../../App/stores/RootStore";
 import { UserFormValues } from "../../App/models/user";
 import AddressForm from "../form/AddressForm";
 import { EditProfile } from "../form/EditProfile";
 import { AddressFormValues } from "../../App/models/address";
 import AddressPresentation from "../form/AddressPresentation";
+import { RouteComponentProps } from "react-router-dom";
+import UserAdsCatalog from "./UserAdsCatalog";
+import { history } from "../..";
 
-const Account: React.FC = () => {
+const Account: React.FC<RouteComponentProps> = () => {
   const rootStore = useContext(RootStoreContext);
   const { loadUser } = rootStore.userStore;
   const { token } = rootStore.commonStore;
@@ -19,7 +22,7 @@ const Account: React.FC = () => {
     editProfile: "EditProfile",
     addressForm: "addressForm",
     adsForm: "adsForm",
-    messagesForm: "messagesForm",
+    postForm: "postForm",
     userAddress: "userAddress",
   };
 
@@ -29,7 +32,7 @@ const Account: React.FC = () => {
     if (token) {
       loadUser().then((user) => setUser(new UserFormValues(user)));
     }
-  }, [loadUser, token]);
+  }, [loadUser, token, setUser]);
 
   useEffect(() => {
     if (user) {
@@ -37,19 +40,12 @@ const Account: React.FC = () => {
         setAddress(new AddressFormValues(address))
       );
     }
-  }, [loadAddress, user]);
+  }, [loadAddress, user, setAddress]);
 
   const getBody = () => {
     switch (status) {
       case Status.adsForm:
-        return (
-          <div style={{ textAlign: "center", marginTop: "15%" }}>
-            <Header as={"h2"}>You have no active ads at the moment.</Header>
-            <Header as={"h4"}>
-              Why not <a href="/">post and ad</a> now?
-            </Header>
-          </div>
-        );
+        return <UserAdsCatalog />;
       case Status.editProfile:
         return (
           <div className="center">
@@ -66,9 +62,16 @@ const Account: React.FC = () => {
         return (
           <div className="center">
             <AddressPresentation />
+            <div style={{ textAlign: "center" }}>
+              <Button
+                onClick={() => setStatus(Status.addressForm)}
+                content="Modify address"
+                color="yellow"
+              ></Button>
+            </div>
           </div>
         );
-      case Status.messagesForm:
+      case Status.postForm:
         return (
           <div className="center" style={{ textAlign: "center" }}>
             <p>Messages Form</p>
@@ -107,8 +110,8 @@ const Account: React.FC = () => {
           </Card>
           <Button.Group basic color="yellow" vertical fluid>
             <Button onClick={() => setStatus(Status.adsForm)}>My Ads</Button>
-            <Button onClick={() => setStatus(Status.messagesForm)}>
-              My Messages
+            <Button onClick={() => history.push("/ads/create")}>
+              Post New Ads
             </Button>
           </Button.Group>
         </Grid.Column>

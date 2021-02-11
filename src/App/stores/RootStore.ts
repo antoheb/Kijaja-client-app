@@ -4,10 +4,12 @@ import UserStore from "./UserStore";
 import CommonStore from "./CommonStore";
 import AddressStore from "./AddressStore";
 import AdStore from './AdStore';
+import ModalStore from '../common/modal/modalStore';
 
 configure({ enforceActions: "always" });
 
 export class RootStore {
+  modalStore: ModalStore;
   userStore: UserStore;
   commonStore: CommonStore;
   addressStore: AddressStore;
@@ -18,6 +20,7 @@ export class RootStore {
     this.commonStore = new CommonStore(this);
     this.addressStore = new AddressStore(this);
     this.adStore = new AdStore(this);
+    this.modalStore = new ModalStore(this)
   }
 }
 

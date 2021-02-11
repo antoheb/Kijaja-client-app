@@ -50,59 +50,54 @@ const AddressForm: React.FC = () => {
   return (
     <Container fluid style={{ marginTop: "50px", width: "600px" }}>
       <Header as="h3" textAlign="center">
-        {address ? ("MODIFY YOUR ADDRESS") : ("ADD AN ADDRESS")}
+        {address ? "MODIFY YOUR ADDRESS" : "ADD AN ADDRESS"}
       </Header>
       <Segment clearing style={{ marginTop: "2em", marginBottom: "3em" }}>
-          <FinalForm
-            initialValues={address}
-            validate={validate}
-            onSubmit={(values: IAddress) => submitForm(values)}
-            render={({
-              handleSubmit,
-              invalid,
-              pristine,
-              dirtySinceLastSubmit,
-            }) => (
-              <Form loading={loadingInitial} onSubmit={handleSubmit} error>
-                <Field
-                  placeholder="Pays"
-                  name="country"
-                  component={TextInput}
-                />
-                <Field
-                  placeholder="Address"
-                  name="street"
-                  component={TextInput}
-                />
-                <Field placeholder="Ville" name="city" component={TextInput} />
-                <Field
-                  placeholder="Province"
-                  name="province"
-                  component={TextInput}
-                />
-                <Field
-                  placeholder="Code Postal"
-                  name="postalCode"
-                  component={TextInput}
-                />
-                <Grid stackable>
-                  <Grid.Row>
-                    <Grid.Column>
-                      <Button
-                        disabled={
-                          (invalid && !dirtySinceLastSubmit) || pristine
-                        }
-                        fluid
-                        color="yellow"
-                        type="submit"
-                        content="AJOUTER"
-                      />
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </Form>
-            )}
-          />
+        <FinalForm
+          initialValues={address}
+          validate={validate}
+          onSubmit={(values: IAddress) => submitForm(values)}
+          render={({
+            handleSubmit,
+            invalid,
+            pristine,
+            dirtySinceLastSubmit,
+          }) => (
+            <Form loading={loadingInitial} onSubmit={handleSubmit} error>
+              <Field placeholder="Pays" name="country" component={TextInput} />
+              <Field
+                placeholder="Address"
+                name="street"
+                component={TextInput}
+              />
+              <Field placeholder="Ville" name="city" component={TextInput} />
+              <Field
+                placeholder="Province"
+                name="province"
+                component={TextInput}
+              />
+              <Field
+                placeholder="Code Postal"
+                name="postalCode"
+                component={TextInput}
+              />
+              <Grid stackable>
+                <Grid.Row>
+                  <Grid.Column>
+                    <Button
+                      loading={loadingInitial}
+                      disabled={(invalid && !dirtySinceLastSubmit) || pristine}
+                      fluid
+                      color="yellow"
+                      type="submit"
+                      content={address ? "MODIFIER" : "AJOUTER"}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Form>
+          )}
+        />
       </Segment>
     </Container>
   );

@@ -3,6 +3,7 @@ export interface IUser {
     lastName: string,
     token: string,
     email: string;
+    phoneNumber: string;
     password: string;
     confirmPassword?: string;
 }
@@ -20,6 +21,7 @@ export class UserFormValues implements IUserFormValues
     password: string = '';
     firstName: string = '';
     lastName: string = '';
+    phoneNumber: string = '';
     confirmPassword?: string = '';
     
     constructor(init?: IUserFormValues)

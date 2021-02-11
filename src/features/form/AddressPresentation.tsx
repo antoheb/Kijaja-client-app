@@ -1,9 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Header, Segment, Item, Button } from "semantic-ui-react";
-import { AddressFormValues, IAddress } from "../../App/models/address";
+import { Container, Header, Segment, Item } from "semantic-ui-react";
+import { AddressFormValues } from "../../App/models/address";
 import { RootStoreContext } from "../../App/stores/RootStore";
-import { history } from '../../index';
 
 const AddressPresentation = () => {
   const { loadAddress } = useContext(RootStoreContext).addressStore;
@@ -26,17 +25,7 @@ const AddressPresentation = () => {
             {address.city + ", " + address.province + " " + address.postalCode}
           </Item.Description>
           <Item.Description>{address.country}</Item.Description>
-          <Item.Description>
-            <br />
-          </Item.Description>
-          <Item.Description>
-            <Button
-              onClick={() => history.push("/")}
-              content="Modify address"
-              color="yellow"
-            ></Button>
-          </Item.Description>
-        </Item.Content>
+          </Item.Content>
       </Segment>
     </Container>
   );

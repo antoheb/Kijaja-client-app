@@ -4,7 +4,7 @@ import { Segment, Grid, Header, List } from "semantic-ui-react";
 
 const AppFooter: React.FC = () => {
   return (
-    <Segment inverted>
+    <Segment inverted style={{height:"230px"}}>
       <Grid divided inverted stackable padded>
         <Grid.Row columns={3}>
           <Grid.Column>
