@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Header, Form, Button, Segment } from "semantic-ui-react";
 import { Field, Form as FinalForm } from "react-final-form";
@@ -9,6 +9,7 @@ import { FORM_ERROR } from "final-form";
 import { IUserFormValues } from "../../App/models/user";
 import { ErrorMessage } from "./ErrorMessage";
 import { combineValidators, composeValidators, isRequired, matchesPattern } from "revalidate";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const SignInForm = () => {
   const validate = combineValidators({
@@ -22,6 +23,8 @@ const SignInForm = () => {
   });
   const rootStore = useContext(RootStoreContext);
   const { login } = rootStore.userStore;
+  const [captchaCompleted, setCaptchaCompleted] = useState(false);
+
 
   return (
     <Grid centered style={{ marginTop: "80px", marginBottom: "80px" }}>
@@ -77,7 +80,13 @@ const SignInForm = () => {
                 />
               </Form>
             )}
-          />
+            />
+            <ReCAPTCHA
+              sitekey='6LcJUk0aAAAAAHGjxbF1chIihCAj4I5IU1bsLniP'
+              onChange={(value) => setCaptchaCompleted(true)}
+              size='normal'
+              type='image'
+            />
         </Segment>
       </Grid.Column>
     </Grid>
