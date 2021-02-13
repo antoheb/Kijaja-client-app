@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import NavBar from "../../features/nav/NavBar";
 import { Container } from "semantic-ui-react";
@@ -9,17 +9,48 @@ import SignUpForm from "../../features/form/SignUpForm";
 import SignInForm from "../../features/form/SignInForm";
 import AppFooter from "../../features/footer/AppFooter";
 import Account from "../../features/customer/Account";
+import { RootStoreContext } from "../stores/RootStore";
+import RegisterSuccess from "../../features/customer/RegisterSuccess";
+import VerifyEmail from "../../features/customer/VerifyEmail";
+import AdsShowcase from "../../features/ads/AdsShowcase";
+import AdsDetailsPage from "../../features/ads/AdsDetailsPage";
+import AdsForm from "../../features/ads/AdsForm";
+import { ModalContainer } from "../common/modal/modalContainer";
+import { DeleteAlert } from "../../features/ads/DeleteAlert";
+import PrivateRoute from "./PrivateRoute";
+import { NotFound } from "../common/NotFound";
 
 const App: React.FC = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { getUser } = rootStore.userStore;
+  const { token, setAppLoaded } = rootStore.commonStore;
+
+  useEffect(() => {
+    if (token) {
+      getUser().then(() => setAppLoaded());
+    } else {
+      setAppLoaded();
+    }
+  }, [getUser, token, setAppLoaded]);
+
   return (
     <Fragment>
-      <Container fluid style={{ minHeigh: "100vh", marginBottom:'3em'}}>
+      <Container fluid style={{ minHeigh: "100vh", marginBottom: "3em" }}>
+        <ModalContainer />
         <NavBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/signIn" component={SignInForm} />
           <Route path="/register" component={SignUpForm} />
-          <Route path="/account" component={Account} />
+          <PrivateRoute exact path="/user/account" component={Account} />
+          <Route path="/user/registerSuccess" component={RegisterSuccess} />
+          <Route path="/client/verifier-email" component={VerifyEmail} />
+          <Route exact path="/ads" component={AdsShowcase} />
+          <PrivateRoute exact path="/ads/create" component={AdsForm} />
+          <PrivateRoute exact path="/ads/create/:id" component={AdsForm} />
+          <Route exact path="/ads/details/:id" component={AdsDetailsPage} />
+          <PrivateRoute exact path={"/ads/delete/:id"} component={DeleteAlert} />
+          <Route component={NotFound} />
         </Switch>
       </Container>
       <AppFooter />

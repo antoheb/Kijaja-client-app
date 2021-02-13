@@ -1,25 +1,62 @@
+import { FORM_ERROR } from "final-form";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { Field, Form as FinalForm } from "react-final-form";
 import { Link } from "react-router-dom";
-import { Grid, Header, Form, Button, Segment, Label, Icon } from "semantic-ui-react";
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  matchesPattern,
+} from "revalidate";
+import { Grid, Header, Form, Button, Segment, Icon } from "semantic-ui-react";
 import { TextInput } from "../../App/common/form/TextInput";
 import { TextInputIcon } from "../../App/common/form/TextInputIcon";
+import { IUserFormValues } from "../../App/models/user";
+import { RootStoreContext } from "../../App/stores/RootStore";
+import { ErrorMessage } from "./ErrorMessage";
 
 const SignUpForm: React.FC = () => {
-  const handleSubmit = (values: any) => {};
+  const validate = combineValidators({
+    email: composeValidators(
+      isRequired({ message: "L'address courriel est obligatoire" }),
+      matchesPattern(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )({ message: "L'address courriel est invalide" })
+    )(),
+    password: isRequired({ message: "Mot de passe est obligatoire" }),
+    firstName: isRequired({ message: "Le prenom est obligatoire" }),
+    lastName: isRequired({ message: "Le nom est obligatoire" }),
+    confirmPassword: isRequired({
+      message: "Vous devez confirmer votre mot de passe",
+    }),
+  });
+
+  const rootStore = useContext(RootStoreContext);
+  const { register, passwordError } = rootStore.userStore;
 
   return (
     <Grid>
-      <Grid.Row style={{ marginTop: "2em", marginBottom:'2em' }}>
+      <Grid.Row style={{ marginTop: "2em", marginBottom: "2em" }}>
         <Grid.Column width={2}></Grid.Column>
         <Grid.Column width={8}>
           <Segment padded>
-            <Header as="h1" style={{marginBottom:'1em'}}>Register</Header>
+            <Header as="h1" style={{ marginBottom: "1em" }}>
+              Register
+            </Header>
             <FinalForm
-              onSubmit={(values: any) => handleSubmit(values)}
-              render={({ handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
+              validate={validate}
+              onSubmit={(values: IUserFormValues) =>
+                register(values).catch((error) => ({ [FORM_ERROR]: error }))
+              }
+              render={({
+                handleSubmit,
+                invalid,
+                submitError,
+                pristine,
+                dirtySinceLastSubmit,
+              }) => (
+                <Form onSubmit={handleSubmit} error>
                   <Field
                     placeholder="First Name"
                     name="firstName"
@@ -50,7 +87,17 @@ const SignUpForm: React.FC = () => {
                     type="password"
                     component={TextInputIcon}
                   />
+                  {submitError && !dirtySinceLastSubmit && (
+                    <ErrorMessage error={submitError} />
+                  )}
+                  {passwordError && !dirtySinceLastSubmit && (
+                    <ErrorMessage
+                      error={submitError}
+                      text={passwordError}
+                    ></ErrorMessage>
+                  )}
                   <Button
+                    disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                     float="left"
                     basic
                     color="yellow"
@@ -74,16 +121,17 @@ const SignUpForm: React.FC = () => {
             />
           </Segment>
           <Segment padded>
-            <Header as={"h5"} style={{ textAlign: "center", marginTop:'8px' }}>
+            <Header as={"h5"} style={{ textAlign: "center", marginTop: "8px" }}>
               Why Register?
             </Header>
             <p>
               To enhance your experience and help you stay safe and secure, you
               now need to register to:
             </p>
-              <Icon name="check"/> Post, edit and manage ads <br /> <br />
-              <Icon name="check"/> Access saved ads in your Favourites from all of your devices <br /> <br />
-              <Icon name="check"/> Reserve your own nickname
+            <Icon name="check" /> Post, edit and manage ads <br /> <br />
+            <Icon name="check" /> Access saved ads in your Favourites from all
+            of your devices <br /> <br />
+            <Icon name="check" /> Reserve your own nickname
           </Segment>
         </Grid.Column>
       </Grid.Row>
