@@ -128,4 +128,12 @@ export default class UserStore {
       throw error;
     }
   };
+
+  @action verifyCaptcha = async (token: string) => {
+    try {
+      return await Agent.Users.verifyCaptcha(token);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

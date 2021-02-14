@@ -44,6 +44,8 @@ const Users = {
 
   edit: (values: IUser): Promise<void> =>
     axios.post(`/user/edit`, values).then((response) => response.data),
+
+  verifyCaptcha: (token: string): Promise<boolean> => axios.post('/user/verifyCaptcha').then((response) => response.data),
 };
 
 const Address = {
