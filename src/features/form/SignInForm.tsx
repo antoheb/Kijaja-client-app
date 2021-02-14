@@ -5,7 +5,6 @@ import { Field, Form as FinalForm } from "react-final-form";
 import { TextInputIcon } from "../../App/common/form/TextInputIcon";
 import { observer } from "mobx-react-lite";
 import { RootStoreContext } from "../../App/stores/RootStore";
-import { FORM_ERROR } from "final-form";
 import { IUserFormValues } from "../../App/models/user";
 import { ErrorMessage } from "./ErrorMessage";
 import {
