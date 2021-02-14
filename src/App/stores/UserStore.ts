@@ -133,6 +133,7 @@ export default class UserStore {
     try {
       return await Agent.Users.verifyCaptcha(token);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
