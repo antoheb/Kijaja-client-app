@@ -23,6 +23,7 @@ interface IProps extends RouteComponentProps<RouteParams> {}
 const AdsDetailsPage: React.FC<IProps> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
   const { loadAdDetails } = rootStore.adStore;
+  const {user, isLoggedIn} = rootStore.userStore
   const [loading, setLoading] = useState(true);
   const [ad, setAd] = useState(new AdsFormValues());
 
@@ -31,6 +32,13 @@ const AdsDetailsPage: React.FC<IProps> = ({ match }) => {
       .then((ads) => setAd(new AdsFormValues(ads)))
       .finally(() => setLoading(false));
   });
+
+  const sendOffer = () => {
+    if(user && isLoggedIn)
+      alert("Your offer has been sent to the seller")
+    else 
+    alert("You need to be registered to send an offer")
+  }
 
   if (loading) return <LoadingComponent component="Loading ads..." />;
   else
@@ -80,7 +88,7 @@ const AdsDetailsPage: React.FC<IProps> = ({ match }) => {
                     content="Come Back"
                     color="black"
                   />
-                  <Button content="Make Offer" color="yellow" />
+                  <Button onClick={() => sendOffer()} content="Make Offer" color="yellow" />
                 </Card.Content>
               </Card>
             </Grid.Column>

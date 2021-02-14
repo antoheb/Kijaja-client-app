@@ -45,7 +45,7 @@ export const EditProfile: React.FC = () => {
       style={{ marginTop: "50px", marginBottom: "50px", width: "400px" }}
     >
       <Header as="h3" textAlign="center">
-        MODIFIER VOTRE PROFILE
+        EDIT YOUR PROFILE
       </Header>
       <Segment clearing style={{ marginBottom: "5em" }}>
         <FinalForm
@@ -63,13 +63,13 @@ export const EditProfile: React.FC = () => {
           }) => (
             <Form loading={loading} onSubmit={handleSubmit} error>
               <Field
-                placeholder="Prenom"
+                placeholder="First Name"
                 name="firstName"
                 component={TextInput}
               />
-              <Field placeholder="Nom" name="lastName" component={TextInput} />
+              <Field placeholder="Last Name" name="lastName" component={TextInput} />
               <Field
-                placeholder="Telephone"
+                placeholder="Phone Number"
                 name="phoneNumber"
                 icon="phone"
                 component={TextInputIcon}
@@ -85,7 +85,7 @@ export const EditProfile: React.FC = () => {
                       fluid
                       color="yellow"
                       type="submit"
-                      content="MODIFIER"
+                      content="MODIFY"
                     />
                   </Grid.Column>
                 </Grid.Row>

@@ -1,6 +1,5 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { toast } from "react-toastify";
 import { Button, Container, Header, Icon, Segment } from "semantic-ui-react";
 import Agent from "../../App/api/Agent";
 import queryString from "query-string";
@@ -11,8 +10,8 @@ const RegisterSuccess: React.FC<RouteComponentProps> = ({ location }) => {
     const handleConfirmEmailResend = () => {
       Agent.Users.resendEmailVerification(email as string)
         .then(() => {
-          toast.success(
-            "Courriel de verification - veuillez verifier votre boite mail"
+          alert(
+            "Email verification - please verify your mail box"
           );
         })
         .catch((error) => console.log(error));
@@ -23,21 +22,21 @@ const RegisterSuccess: React.FC<RouteComponentProps> = ({ location }) => {
         <Segment placeholder textAlign="center">
           <Header icon>
             <Icon name="check" />
-            Création du compte réussie avec succès!
+            New account created with success!
           </Header>
           <Segment.Inline>
             <div className="center">
               <p>
-                Regardez vos emails (incluant vos courriers indésirables) pour
-                vérifier votre compte!
+                Look your mail box (including your junk mail) to
+                verify your account!
               </p>
               {email && (
                 <>
                   <p style={{ textAlign: "center", paddingBottom: "20px" }}>
-                    Toujours pas reçu de email ? Cliquez ici
+                    Still not receive anything ? Click Here
                   </p>
                   <Button
-                    content="Renvoyer le mail"
+                    content="Send Mail Again"
                     size="huge"
                     color="yellow"
                     onClick={handleConfirmEmailResend}

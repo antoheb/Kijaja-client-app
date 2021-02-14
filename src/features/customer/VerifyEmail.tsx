@@ -28,13 +28,13 @@ const VerifyEmail: React.FC<RouteComponentProps> = ({ location }) => {
   const handleConfirmEmailResend = () => {
     Agent.Users.resendEmailVerification(email as string)
       .then(() => {
-        alert("Email de vérification envoyé - regardez vos emails");
+        alert("Email verification send - please verify your mail box");
       })
       .catch((error) => console.log(error));
   };
 
   const goToLogin = () => {
-    history.push("/signIn")
+    history.push("/signIn");
   };
 
   const getBody = () => {
@@ -45,14 +45,14 @@ const VerifyEmail: React.FC<RouteComponentProps> = ({ location }) => {
         return (
           <div className="center">
             <p>
-              La vérification n'a pas fonctionné - vous pouvez cliquer pour
-              envoyer un nouvel email de vérification
+              The email verification did not work properly - you can click here
+              to send a new verification link
             </p>
             <Button
               onClick={handleConfirmEmailResend}
               primary
               size="huge"
-              content="Renvoyer email"
+              content="Send Mail Again"
               style={{ backgroundColor: "#00c4b3", color: "white" }}
             />
           </div>
@@ -60,12 +60,12 @@ const VerifyEmail: React.FC<RouteComponentProps> = ({ location }) => {
       case Status.Success:
         return (
           <div className="center" style={{ textAlign: "center" }}>
-            <p>Email a été vérifié - vous pouvez vous connecter</p>
+            <p>Email confirm - you can now login</p>
             <Button
               onClick={goToLogin}
               color="yellow"
               size="large"
-              content="Connection"
+              content="Login"
             />
           </div>
         );
@@ -79,7 +79,7 @@ const VerifyEmail: React.FC<RouteComponentProps> = ({ location }) => {
       <Segment placeholder>
         <Header icon>
           <Icon name="envelope" />
-          Vérification de l'addresse mail
+          Email verification
         </Header>
         <Segment.Inline>{getBody()}</Segment.Inline>
       </Segment>

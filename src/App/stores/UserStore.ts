@@ -29,6 +29,7 @@ export default class UserStore {
   }
 
   @action register = async (values: IUserFormValues) => {
+    this.loadingInitial = true;
     this.passwordError = null;
     if (values.password !== values.confirmPassword) {
       this.passwordError = "Passwords do not correspond";
@@ -36,7 +37,9 @@ export default class UserStore {
       try {
         await Agent.Users.registerUser(values);
         history.push(`/user/registerSuccess?email=${values.email}`);
+        this.loadingInitial = false;
       } catch (error) {
+        this.loadingInitial = false;
         throw error;
       }
     }
@@ -73,7 +76,6 @@ export default class UserStore {
   };
 
   @action logout = () => {
-    this.loadingInitial = true;
     try {
       this.rootStore.commonStore.setToken(null);
       this.user = null;
@@ -82,7 +84,6 @@ export default class UserStore {
     } catch (error) {
       throw error;
     }
-    this.loadingInitial = false;
   };
 
   @action getUser = async () => {

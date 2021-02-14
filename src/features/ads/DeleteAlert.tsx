@@ -5,7 +5,6 @@ import { Button, Form, Grid, Item, Modal } from "semantic-ui-react";
 import { RootStoreContext } from "../../App/stores/RootStore";
 import { ErrorMessage } from "../form/ErrorMessage";
 import { Form as FinalForm } from 'react-final-form';
-import { observer } from "mobx-react-lite";
 
 interface RouteParams {
     id: string;

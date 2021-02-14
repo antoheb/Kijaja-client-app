@@ -17,11 +17,11 @@ import { ErrorMessage } from "./ErrorMessage";
 
 const AddressForm: React.FC = () => {
   const validate = combineValidators({
-    province: isRequired({ message: "La province est obligatoire" }),
-    street: isRequired({ message: "L'address est obligatoire" }),
-    city: isRequired({ message: "La ville est obligatoire" }),
-    postalCode: isRequired({ message: "Le code postal est obligatoire" }),
-    country: isRequired({ message: "Le pays obligatoire" }),
+    province: isRequired({ message: "State is required" }),
+    street: isRequired({ message: "Street is required" }),
+    city: isRequired({ message: "City is required" }),
+    postalCode: isRequired({ message: "Postal code is required" }),
+    country: isRequired({ message: "Country is required" }),
   });
 
   const {
@@ -62,20 +62,20 @@ const AddressForm: React.FC = () => {
             dirtySinceLastSubmit,
           }) => (
             <Form loading={loadingInitial} onSubmit={handleSubmit} error>
-              <Field placeholder="Pays" name="country" component={TextInput} />
+              <Field placeholder="Country" name="country" component={TextInput} />
               <Field
                 placeholder="Address"
                 name="street"
                 component={TextInput}
               />
-              <Field placeholder="Ville" name="city" component={TextInput} />
+              <Field placeholder="City" name="city" component={TextInput} />
               <Field
                 placeholder="Province"
                 name="province"
                 component={TextInput}
               />
               <Field
-                placeholder="Code Postal"
+                placeholder="Postal Code"
                 name="postalCode"
                 component={TextInput}
               />
@@ -88,7 +88,7 @@ const AddressForm: React.FC = () => {
                       fluid
                       color="yellow"
                       type="submit"
-                      content={address ? "MODIFIER" : "AJOUTER"}
+                      content={address ? "MODIFY" : "ADD"}
                     />
                   </Grid.Column>
                 </Grid.Row>

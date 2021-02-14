@@ -19,21 +19,21 @@ import { ErrorMessage } from "./ErrorMessage";
 const SignUpForm: React.FC = () => {
   const validate = combineValidators({
     email: composeValidators(
-      isRequired({ message: "L'address courriel est obligatoire" }),
+      isRequired({ message: "Email address is required" }),
       matchesPattern(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       )({ message: "L'address courriel est invalide" })
     )(),
-    password: isRequired({ message: "Mot de passe est obligatoire" }),
-    firstName: isRequired({ message: "Le prenom est obligatoire" }),
-    lastName: isRequired({ message: "Le nom est obligatoire" }),
+    password: isRequired({ message: "Password is required" }),
+    firstName: isRequired({ message: "You need to specify your fist name" }),
+    lastName: isRequired({ message: "You need to specify your last name" }),
     confirmPassword: isRequired({
-      message: "Vous devez confirmer votre mot de passe",
+      message: "You need to confirm your password",
     }),
   });
 
   const rootStore = useContext(RootStoreContext);
-  const { register, passwordError } = rootStore.userStore;
+  const { register, passwordError, loadingInitial } = rootStore.userStore;
 
   return (
     <Grid>
@@ -97,6 +97,7 @@ const SignUpForm: React.FC = () => {
                     ></ErrorMessage>
                   )}
                   <Button
+                    loading={loadingInitial}
                     disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                     float="left"
                     basic
@@ -131,7 +132,7 @@ const SignUpForm: React.FC = () => {
             <Icon name="check" /> Post, edit and manage ads <br /> <br />
             <Icon name="check" /> Access saved ads in your Favourites from all
             of your devices <br /> <br />
-            <Icon name="check" /> Reserve your own nickname
+            <Icon name="check" /> Send offer to sellers
           </Segment>
         </Grid.Column>
       </Grid.Row>

@@ -27,8 +27,8 @@ const NavBar: React.FC = () => {
               <Menu.Item as={Link} to="/ads">
                 Buy & Sell
               </Menu.Item>
-              <Menu.Item as={Link} to="/ads">
-                New Sale
+              <Menu.Item as={Link} to="/ads/create">
+                Post Ad
               </Menu.Item>
             </Menu>
           </Grid.Column>
@@ -49,7 +49,7 @@ const NavBar: React.FC = () => {
                     <Dropdown.Item
                       style={{ position: "left" }}
                       onClick={logout}
-                      text="Se Deconnecter"
+                      text="Log Out"
                     />
                   </Dropdown.Menu>
                 </Dropdown>

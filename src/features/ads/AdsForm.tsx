@@ -80,7 +80,6 @@ const AdsForm: React.FC<IProps> = ({ match }) => {
                   handleSubmit,
                   invalid,
                   pristine,
-                  submitError,
                   dirtySinceLastSubmit,
                 }) => (
                   <Form loading={loadingInitial} onSubmit={handleSubmit} error>

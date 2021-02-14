@@ -13,11 +13,11 @@ const AppFooter: React.FC = () => {
               <List.Item as={Link} to={"/"}>
                 Home
               </List.Item>
-              <List.Item as={Link} to={"/"}>
+              <List.Item as={Link} to={"/ads"}>
                 Buy & Sell
               </List.Item>
-              <List.Item as={Link} to={"/"}>
-                New Sale
+              <List.Item as={Link} to={"/ads/create"}>
+                Post Ad
               </List.Item>
             </List>
           </Grid.Column>
